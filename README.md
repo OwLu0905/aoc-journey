@@ -34,3 +34,5 @@ aoc-journey/
 ├── Cargo.toml
 └── README.md
 ```
+
+Total stars: 3 ⭐️
