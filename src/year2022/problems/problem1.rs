@@ -44,11 +44,10 @@ pub fn solve_problem1(path: &str) -> i32 {
         clear_data.push(sp.split(SPLIT_COL).collect());
     }
 
-    let max_elf_info = MaxCal { elf: 0, cal: 0 };
+    let mut max_elf_info = MaxCal { elf: 0, cal: 0 };
 
     for (i, el) in clear_data.iter().enumerate() {
         let a: i32 = el.iter().map(|x| x.parse().unwrap_or(0)).sum();
-        let mut max_elf_info = MaxCal { elf: 0, cal: 0 };
         match a > max_elf_info.cal {
             true => {
                 max_elf_info.cal = a;
