@@ -5,15 +5,15 @@ use std::process::Command;
 fn calculate_tested_functions() -> usize {
     let output = Command::new("cargo")
         .arg("test")
-        .arg("--quiet")
-        .arg("--")
-        .arg("--list")
         .output()
         .expect("Failed to execute command.");
 
     let stdout = String::from_utf8_lossy(&output.stdout);
     dbg!(&stdout);
-    let count = stdout.lines().filter(|line| line.contains("test")).count();
+    let count = stdout
+        .lines()
+        .filter(|line| line.contains("test") && line.contains("... ok"))
+        .count();
     count
 }
 
