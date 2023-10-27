@@ -203,13 +203,13 @@ mod tests {
     use super::question2;
 
     #[test]
-    fn tests_rps() {
+    fn tests_y2022_d2_1() {
         let file_path = "testdata/y2022_p2.txt";
         let score = question1(file_path);
         assert_eq!(score, 14264);
     }
     #[test]
-    fn tests_rps_2() {
+    fn tests_y2022_d2_2() {
         let file_path_simple = "testdata/y2022_p2_simple.txt";
         let score = question2(file_path_simple);
         assert_eq!(score, 12);
