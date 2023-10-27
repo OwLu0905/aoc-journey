@@ -35,4 +35,4 @@ aoc-journey/
 └── README.md
 ```
 
-Total stars: 3 ⭐️
+Total stars: 4 ⭐️

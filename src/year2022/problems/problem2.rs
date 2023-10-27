@@ -96,6 +96,24 @@ impl MyStra {
     }
 }
 
+impl OpStra {
+    fn op_win_my_score(&self) -> i32 {
+        match self {
+            OpStra::A => 3,
+            OpStra::B => 1,
+            OpStra::C => 2,
+        }
+    }
+
+    fn op_lose_my_score(&self) -> i32 {
+        match self {
+            OpStra::A => 2,
+            OpStra::B => 3,
+            OpStra::C => 1,
+        }
+    }
+}
+
 fn match_op_char(s: &str) -> OpStra {
     match s {
         "A" => OpStra::A,
@@ -124,6 +142,14 @@ fn compare_result(a: OpStra, b: MyStra) -> i32 {
     }
 }
 
+fn compare_result2(a: OpStra, b: MyStra) -> i32 {
+    match b {
+        MyStra::X => 0 + a.op_win_my_score(),
+        MyStra::Y => Outcome::Draw + a.score(),
+        MyStra::Z => 6 + a.op_lose_my_score(),
+    }
+}
+
 pub fn question1(path: &str) -> i32 {
     let mut file = fs::File::open(path).expect("can't open this file");
     let mut data: String = String::new();
@@ -142,14 +168,42 @@ pub fn question1(path: &str) -> i32 {
     score
 }
 
+pub fn question2(path: &str) -> i32 {
+    let mut file = fs::File::open(path).expect("can't open this file");
+    let mut data: String = String::new();
+    let _ = file.read_to_string(&mut data);
+    let a: Vec<Vec<&str>> = data
+        .split_terminator(SPLIT_COL)
+        .map(|x: &str| x.split(" ").collect())
+        .collect();
+
+    let mut score = 0;
+    for ele in a {
+        let op_round = match_op_char(ele[0]);
+        let my_round = match_my_char(ele[1]);
+        score += compare_result2(op_round, my_round)
+    }
+    score
+}
 #[cfg(test)]
 mod tests {
     use super::question1;
+    use super::question2;
 
     #[test]
     fn tests_rps() {
-        let file_path = "testdata/y2022-p2.txt";
+        let file_path = "testdata/y2022_p2.txt";
         let score = question1(file_path);
         assert_eq!(score, 14264);
+    }
+    #[test]
+    fn tests_rps_2() {
+        let file_path_simple = "testdata/y2022_p2_simple.txt";
+        let score = question2(file_path_simple);
+        assert_eq!(score, 12);
+
+        let file_path = "testdata/y2022_p2.txt";
+        let score = question2(file_path);
+        assert_eq!(score, 12382);
     }
 }
