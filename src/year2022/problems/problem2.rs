@@ -21,7 +21,6 @@ enum MyStra {
 } */
 
 // NOTE: Rock > Scissors > Paper > Rock
-// NOTE:   A  >  Y
 
 #[derive(Debug, PartialEq)]
 enum OpStra {
@@ -30,6 +29,8 @@ enum OpStra {
     C,
 }
 
+// NOTE: problem 1 : X, Y, Z indicate Rock, Paper, and Scissors
+// NOTE: problem  2 : X, Y, Z indicate Lost, Draw, and Win
 #[derive(Debug, PartialEq)]
 enum MyStra {
     X,
@@ -37,11 +38,11 @@ enum MyStra {
     Z,
 }
 
-// enum Score {
-//     Rock = 1,
-//     Paper = 2,
-//     Scissors = 3,
-// }
+enum Score {
+    Rock = 1,
+    Paper = 2,
+    Scissors = 3,
+}
 
 enum Outcome {
     Lost = 0,
@@ -62,6 +63,17 @@ impl Add<i32> for Outcome {
     }
 }
 
+impl Add<i32> for Score {
+    type Output = i32;
+
+    fn add(self, rhs: i32) -> i32 {
+        match self {
+            Score::Rock => 1 + rhs,
+            Score::Paper => 2 + rhs,
+            Score::Scissors => 3 + rhs,
+        }
+    }
+}
 trait GetScore {
     fn score(&self) -> i32;
 }
@@ -69,9 +81,9 @@ trait GetScore {
 impl GetScore for OpStra {
     fn score(&self) -> i32 {
         match self {
-            OpStra::A => 1,
-            OpStra::B => 2,
-            OpStra::C => 3,
+            OpStra::A => Score::Rock + 0,
+            OpStra::B => Score::Paper + 0,
+            OpStra::C => Score::Scissors + 0,
         }
     }
 }
@@ -79,9 +91,9 @@ impl GetScore for OpStra {
 impl GetScore for MyStra {
     fn score(&self) -> i32 {
         match self {
-            MyStra::X => 1,
-            MyStra::Y => 2,
-            MyStra::Z => 3,
+            MyStra::X => Score::Rock + 0,
+            MyStra::Y => Score::Paper + 0,
+            MyStra::Z => Score::Scissors + 0,
         }
     }
 }
@@ -99,17 +111,17 @@ impl MyStra {
 impl OpStra {
     fn op_win_my_score(&self) -> i32 {
         match self {
-            OpStra::A => 3,
-            OpStra::B => 1,
-            OpStra::C => 2,
+            OpStra::A => Score::Scissors + 0,
+            OpStra::B => Score::Rock + 0,
+            OpStra::C => Score::Paper + 0,
         }
     }
 
     fn op_lose_my_score(&self) -> i32 {
         match self {
-            OpStra::A => 2,
-            OpStra::B => 3,
-            OpStra::C => 1,
+            OpStra::A => Score::Paper + 0,
+            OpStra::B => Score::Scissors + 0,
+            OpStra::C => Score::Rock + 0,
         }
     }
 }
@@ -144,9 +156,9 @@ fn compare_result(a: OpStra, b: MyStra) -> i32 {
 
 fn compare_result2(a: OpStra, b: MyStra) -> i32 {
     match b {
-        MyStra::X => 0 + a.op_win_my_score(),
+        MyStra::X => Outcome::Lost + a.op_win_my_score(),
         MyStra::Y => Outcome::Draw + a.score(),
-        MyStra::Z => 6 + a.op_lose_my_score(),
+        MyStra::Z => Outcome::Win + a.op_lose_my_score(),
     }
 }
 
