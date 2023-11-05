@@ -14,14 +14,14 @@ pub fn problem4_1(path: &str) -> i32 {
     let section_list = content.split_terminator(SPLIT_COL).collect::<Vec<&str>>();
     let pair_list = section_list
         .iter()
-        .map(|x| check_overlap(x))
+        .map(|x| check_full_contain(x))
         .collect::<Vec<i32>>();
 
     let count_pair: i32 = pair_list.iter().sum();
     count_pair
 }
 
-pub fn check_overlap(str_list: &str) -> i32 {
+pub fn check_full_contain(str_list: &str) -> i32 {
     let split_section = str_list.split_terminator(",").collect::<Vec<&str>>();
     let first = split_section[0]
         .split_terminator("-")
@@ -62,6 +62,55 @@ pub fn check_overlap(str_list: &str) -> i32 {
     count
 }
 
+pub fn problem4_2(path: &str) -> i32 {
+    let mut file = File::open(path).expect("can't read file");
+    let mut content = String::new();
+    let _ = file.read_to_string(&mut content);
+
+    let section_list = content.split_terminator(SPLIT_COL).collect::<Vec<&str>>();
+    let pair_list = section_list
+        .iter()
+        .map(|x| check_overlap(x))
+        .collect::<Vec<i32>>();
+
+    let count_pair: i32 = pair_list.iter().sum();
+    count_pair
+}
+
+pub fn check_overlap(str_list: &str) -> i32 {
+    let split_section = str_list.split_terminator(",").collect::<Vec<&str>>();
+    let first = split_section[0]
+        .split_terminator("-")
+        .collect::<Vec<&str>>()
+        .iter()
+        .map(|x| x.parse::<i32>().unwrap_or_default())
+        .collect::<Vec<i32>>();
+
+    let second = split_section[1]
+        .split_terminator("-")
+        .collect::<Vec<&str>>()
+        .iter()
+        .map(|x| x.parse::<i32>().unwrap_or_default())
+        .collect::<Vec<i32>>();
+
+    let first_min_second_min_diff = first[0] - second[0];
+    let first_min_second_max_diff = first[0] - second[1];
+    let first_max_second_min_diff = first[1] - second[0];
+    let first_max_second_max_diff = first[1] - second[1];
+
+    let fisrt_min_in_range = first_min_second_min_diff * first_min_second_max_diff <= 0;
+    let first_max_in_range = first_max_second_min_diff * first_max_second_max_diff <= 0;
+
+    let second_in_range = first_min_second_min_diff * first_max_second_max_diff <= 0;
+
+    let count = if fisrt_min_in_range || first_max_in_range || second_in_range {
+        1
+    } else {
+        0
+    };
+    count
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -73,5 +122,13 @@ mod tests {
 
         let file_path = "testdata/y2022_p4.txt";
         assert_eq!(524, problem4_1(file_path));
+    }
+    #[test]
+    fn tests_y2022_d4_2() {
+        let file_path_simple = "testdata/y2022_p4_simple.txt";
+        assert_eq!(4, problem4_2(file_path_simple));
+
+        let file_path = "testdata/y2022_p4.txt";
+        assert_eq!(798, problem4_2(file_path));
     }
 }
