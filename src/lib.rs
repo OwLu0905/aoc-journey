@@ -7,3 +7,8 @@ pub mod year2022 {
         pub mod problem5;
     }
 }
+
+pub mod command {
+    pub mod calculate_stars;
+    pub mod create_template;
+}
