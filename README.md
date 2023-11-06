@@ -12,6 +12,11 @@ This repository serves as a collection of my solutions and records for Advent of
 aoc-journey/
 ├── src/
 │   ├── lib.rs
+│   ├── command/
+│   │   ├── calculate_stars.rs
+│   │   └── create_template.rs
+│   ├── template/
+│   │   └── template.rs
 │   ├── year2022/
 │   │   ├── problems/
 │   │   │   ├── mod.rs
