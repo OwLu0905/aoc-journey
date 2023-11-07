@@ -1,15 +1,23 @@
+use crossterm::{
+    style::{Color, ResetColor, SetForegroundColor},
+    ExecutableCommand,
+};
 use std::fs::{self, File};
 use std::io::{self, Read, Write};
 
 pub fn generate_template() {
     let mut year = String::new();
     let mut day = String::new();
+    let mut stdout: io::Stdout = io::stdout();
 
+    stdout.execute(SetForegroundColor(Color::Green)).unwrap();
     println!("Enter AOC year: ");
     io::stdin().read_line(&mut year).expect("cant get the year");
 
+    stdout.execute(SetForegroundColor(Color::Blue)).unwrap();
     println!("Enter AOC day: ");
     io::stdin().read_line(&mut day).expect("cant get the day");
+    stdout.execute(ResetColor).unwrap();
 
     let problem_first = "p_1";
     let problem_second = "p_2";
