@@ -5,6 +5,7 @@ pub mod year2022 {
         pub mod problem3;
         pub mod problem4;
         pub mod problem5;
+        pub mod problem6;
     }
 }
 
