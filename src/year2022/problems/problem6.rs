@@ -11,20 +11,18 @@ pub fn problem6_1(puzzle_path: &str) -> i32 {
 
     // NOTE: check data
     let mut check_is_duplicate: Vec<bool> = vec![false; puzzle.chars().count()];
-
-    // TODO: use vec to minimize memory size
-    // let mut check_record: HashMap<char, usize> = HashMap::new();
-    let mut check_record: Vec<Option<usize>> = vec![None; 128];
+    let mut check_record: Vec<Option<usize>> = vec![None; 26];
 
     for (i, val) in puzzle.chars().enumerate() {
-        if let Some(prev_index) = check_record[val as usize] {
+        let char_to_idx = val as usize - 'a' as usize;
+        if let Some(prev_index) = check_record[char_to_idx] {
             if (i - prev_index) >= 4 {
                 check_is_duplicate[prev_index] = false;
             } else {
                 check_is_duplicate[prev_index] = true;
             }
         }
-        check_record[val as usize] = Some(i);
+        check_record[char_to_idx] = Some(i);
     }
 
     // NOTE: count
