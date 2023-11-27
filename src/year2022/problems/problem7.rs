@@ -110,9 +110,7 @@ pub fn problem7_1(path: &str) -> u32 {
         .filter(|&v| v <= 100000)
         .collect();
 
-    let mut sorted_filter_value = filter_value.clone();
-    sorted_filter_value.sort();
-    sorted_filter_value.iter().sum()
+    filter_value.iter().sum()
 }
 
 pub fn problem7_2(path: &str) -> u32 {
