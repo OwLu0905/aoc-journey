@@ -4,6 +4,8 @@ use std::{
     io::{BufRead, BufReader},
 };
 
+const MAX_ROPE_KNOTS: usize = 10;
+
 trait Walk {
     fn walk(&mut self, action: &Motions, record: &mut HashMap<[i32; 2], bool>) -> &Self;
 }
@@ -30,6 +32,11 @@ struct Motions {
 struct Rope {
     head: [i32; 2],
     tail: [i32; 2],
+}
+
+#[derive(Debug)]
+struct RopeGroup {
+    ropes: [[i32; 2]; MAX_ROPE_KNOTS],
 }
 
 impl Walk for Rope {
@@ -60,6 +67,54 @@ impl Walk for Rope {
                 record.insert(record_arr, true);
             }
         }
+        self
+    }
+}
+
+impl Walk for RopeGroup {
+    fn walk(&mut self, action: &Motions, record: &mut HashMap<[i32; 2], bool>) -> &Self {
+        for _ in 0..action.step {
+            let cal_step = action.get_position();
+
+            for i in 0..(MAX_ROPE_KNOTS - 1) {
+                if i == 0 {
+                    self.ropes[i][0] += cal_step[0];
+                    self.ropes[i][1] += cal_step[1];
+                }
+
+                let x_dist = self.ropes[i][0] - self.ropes[i + 1][0];
+                let y_dist = self.ropes[i][1] - self.ropes[i + 1][1];
+
+                if x_dist == 0 && y_dist.abs() > 1 {
+                    self.ropes[i + 1][1] += y_dist / 2;
+                } else if y_dist == 0 && x_dist.abs() > 1 {
+                    self.ropes[i + 1][0] += x_dist / 2;
+                } else if x_dist.abs() > y_dist.abs() {
+                    self.ropes[i + 1][0] += x_dist / 2;
+                    self.ropes[i + 1][1] += y_dist;
+                } else if y_dist.abs() > x_dist.abs() {
+                    self.ropes[i + 1][0] += x_dist;
+                    self.ropes[i + 1][1] += y_dist / 2;
+
+                    // NOTE: in large rope => should consider the diagonal
+                    // (0,0) to (2,2) because except for HEAD knot the other
+                    // ropes can move diagonally
+                } else if y_dist.abs() == x_dist.abs() && y_dist.abs() == 2 {
+                    self.ropes[i + 1][0] += x_dist / 2;
+                    self.ropes[i + 1][1] += y_dist / 2;
+                }
+            }
+
+            let record_arr = [
+                self.ropes[MAX_ROPE_KNOTS - 1][0],
+                self.ropes[MAX_ROPE_KNOTS - 1][1],
+            ];
+
+            if !record.contains_key(&record_arr) {
+                record.insert(record_arr, true);
+            }
+        }
+
         self
     }
 }
@@ -97,7 +152,34 @@ pub fn problem9_1(path: &str) -> usize {
 
     record_map.len()
 }
-pub fn problem9_2() {}
+pub fn problem9_2(path: &str) -> usize {
+    let file = File::open(path).expect("cant read the file");
+    let reader = BufReader::new(file);
+
+    let matrix: Vec<Motions> = reader
+        .lines()
+        .map(|line_result| {
+            let split_result = line_result.unwrap();
+            let split_result = split_result.split(" ").collect::<Vec<&str>>();
+
+            let step = split_result[1].parse::<u32>().unwrap();
+            Motions {
+                direction: String::from(split_result[0]),
+                step,
+            }
+        })
+        .collect();
+
+    let mut record_map: HashMap<[i32; 2], bool> = HashMap::new();
+    let mut rope = RopeGroup {
+        ropes: [[0, 0]; MAX_ROPE_KNOTS],
+    };
+    for i in matrix {
+        rope.walk(&i, &mut record_map);
+    }
+
+    record_map.len()
+}
 
 #[cfg(test)]
 mod tests {
@@ -112,6 +194,12 @@ mod tests {
         assert_eq!(5858, problem9_1(file_path));
     }
 
-    // #[test]
-    // fn tests_y2022_d9_2() {}
+    #[test]
+    fn tests_y2022_d9_2() {
+        let file_path_simple = "testdata/y2022_p9_simple2.txt";
+        assert_eq!(36, problem9_2(file_path_simple));
+
+        let file_path = "testdata/y2022_p9.txt";
+        assert_eq!(2602, problem9_2(file_path));
+    }
 }
