@@ -1,0 +1,146 @@
+addx 15 1,2  (1, 16)
+addx -11 3,4 (16, 5)
+addx 6 5,6 (5, 11)
+addx -3 7,8
+addx 5 9,10
+addx -1 11,12
+addx -8 13,14
+addx 13 15,16
+addx 4 17,18
+noop 19
+addx -1 20, 21
+addx 5 22,23
+addx -1 24,25
+addx 5 26,27
+addx -1 28,29
+addx 5 30,31
+addx -1 32,33
+addx 5 34,35
+addx -1 36,37
+addx -35 38,39
+addx 1 40, 41
+addx 24 42, 43
+addx -19 44,45
+addx 1 46,47
+addx 16 48,49
+addx -11 50,51
+noop 52
+noop 53
+addx 21 54,55
+addx -15 56,57
+noop 58
+noop 59
+addx -3 60,61
+addx 9 62,63
+addx 1 64,65
+addx -3 66,67
+addx 8 68,69
+addx 1 70,71
+addx 5 72,73
+noop 74
+noop 75
+noop 76
+noop 77
+noop 78 
+addx -36 79, 80
+noop 81
+addx 1 82, 83
+addx 7 84,85
+noop 86
+noop 87
+noop 88
+addx 2 89,90
+addx 6 91,92
+noop 93
+noop 94
+noop 95
+noop 96
+noop 97
+addx 1 98 99
+noop 100
+noop 101
+addx 7 102 103
+addx 1 104 105
+noop 106
+addx -13 107 108
+addx 13 109 110
+addx 7 111 112
+noop 113 
+addx 1 114 115
+addx -33 116 117
+noop 118
+noop 119
+noop 120
+addx 2 121 122
+noop 123
+noop 124
+noop 125
+addx 8 126 127
+noop 128
+addx -1 129 130
+addx 2 131 132
+addx 1 133 134
+noop 135
+addx 17  136 137
+addx -9 138 139
+addx 1 140 141
+addx 1 142 143
+addx -3 144 145
+addx 11 146 147
+noop 148 
+noop 149
+addx 1 150 151
+noop 152
+addx 1 153 154
+noop 155
+noop 156
+addx -13 157 158
+addx -19 159 160 
+addx 1 161 162
+addx 3 163 164
+addx 26 165 166 
+addx -30 167 168
+addx 12 169 170 
+addx -1 171 172
+addx 3 173 174
+addx 1 175 176
+noop 177 
+noop 178 
+noop 179
+addx -9 180 181
+addx 18 182 183
+addx 1 184 185
+addx 2 186 187
+noop 188
+noop 189
+addx 9 190 191
+noop 192
+noop 193 
+noop 194
+addx -1 195 196
+addx 2 197 198
+addx -37 199 200 
+addx 1 201 202
+addx 3 203 204
+noop 205
+addx 15 206 207
+addx -21 208 209
+addx 22 210 211
+addx -6 212 213
+addx 1 214 215
+noop 216
+addx 2 217 218
+addx 1 219 220
+noop
+addx -10
+noop
+noop
+addx 20
+addx 1
+addx 2
+addx 2
+addx -6
+addx -11
+noop
+noop
+noop
