@@ -12,7 +12,9 @@ fn calculate_tested_functions() -> usize {
     dbg!(&stdout);
     let count = stdout
         .lines()
-        .filter(|line| line.contains("test") && line.contains("... ok"))
+        .filter(|line| {
+            line.contains("test") && line.contains("... ok") && !line.contains("optimize")
+        })
         .count();
     count
 }

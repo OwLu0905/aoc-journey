@@ -78,7 +78,6 @@ impl Graph {
                 }
 
                 let gap = *check_value as i32 - *vid_value as i32;
-                println!("{:?}", gap);
 
                 // BUG: "if gap >= 0 && gap <= 1" the >=0 will cause error
                 // NOTE:
@@ -89,7 +88,7 @@ impl Graph {
         }
     }
 
-    pub fn best_signal(&self, start_score: VId, end_score: VId) -> Step {
+    pub fn best_signal(&self, start_score: VId, end_score: VId) -> Option<Step> {
         let mut visited: HashMap<VId, bool> = HashMap::new();
         let mut path_cost: HashMap<VId, (VId, Step)> = HashMap::new();
         let mut queue: Vec<(VId, VId, Step)> = Vec::new();
@@ -150,7 +149,7 @@ impl Graph {
         //     let vb = *self.vertices.get(&p).unwrap() as char;
         // }
 
-        path_cost.get(&end_score).unwrap().1
+        Some(path_cost.get(&end_score)?.1)
     }
 }
 
@@ -195,10 +194,77 @@ pub fn problem12_1(path: &str) -> i32 {
     let start = graph.get_id(start_score.0, start_score.1);
     let end = graph.get_id(end_score.0, end_score.1);
 
-    graph.best_signal(start, end)
+    match graph.best_signal(start, end) {
+        Some(step) => step,
+        None => 0,
+    }
 }
 
-pub fn problem12_2() {}
+pub fn problem12_2(path: &str) -> i32 {
+    let file = File::open(path).expect("no file exists");
+    let reader = BufReader::new(file);
+
+    // a: 97, z: 122
+    let mut start_score = (0, 0);
+    let mut end_score = (0, 0);
+
+    let matrix = reader
+        .lines()
+        .map(|x| x.unwrap().as_bytes().to_vec())
+        .collect::<Vec<_>>();
+
+    let rows = matrix.len();
+    let cols = matrix[0].len();
+
+    let mut graph = Graph::new(rows as i32, cols as i32);
+
+    for j in 0..rows {
+        for i in 0..cols {
+            if matrix[j][i] == ('S' as u8) {
+                start_score = (j as i32, i as i32);
+            }
+
+            if matrix[j][i] == ('E' as u8) {
+                end_score = (j as i32, i as i32);
+            }
+
+            graph.add_node(j as i32, i as i32, matrix[j][i])
+        }
+    }
+
+    for j in 0..rows {
+        for i in 0..cols {
+            graph.add_edge(j as i32, i as i32)
+        }
+    }
+
+    let mut start_point_list: Vec<(i32, i32)> = Vec::new();
+    // TODO: get 'a' position:
+    for j in 0..rows {
+        for i in 0..cols {
+            let check_pos = matrix[j][i];
+            if check_pos == ('a' as u8) {
+                start_point_list.push((j as i32, i as i32))
+            }
+        }
+    }
+    let mut step = i32::MAX;
+
+    let end = graph.get_id(end_score.0, end_score.1);
+
+    for start_coor in start_point_list {
+        let start = graph.get_id(start_coor.0, start_coor.1);
+
+        let check_result = graph.best_signal(start, end);
+        if let Some(result) = check_result {
+            if result < step {
+                step = result;
+            }
+        }
+    }
+
+    step
+}
 
 #[cfg(test)]
 mod tests {
@@ -213,6 +279,12 @@ mod tests {
         assert_eq!(352, problem12_1(file_path));
     }
 
-    // #[test]
-    // fn tests_y2022_d12_2() {}
+    #[test]
+    fn tests_y2022_d12_2() {
+        let file_path_simple = "testdata/y2022_p12_simple.txt";
+        assert_eq!(29, problem12_2(file_path_simple));
+
+        let file_path = "testdata/y2022_p12.txt";
+        assert_eq!(345, problem12_2(file_path));
+    }
 }
