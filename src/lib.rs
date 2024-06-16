@@ -13,6 +13,8 @@ pub mod year2022 {
         pub mod problem8;
         pub mod problem9;
     }
+
+    pub mod optimize;
 }
 
 pub mod command {
