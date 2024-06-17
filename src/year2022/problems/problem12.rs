@@ -205,7 +205,6 @@ pub fn problem12_2(path: &str) -> i32 {
     let reader = BufReader::new(file);
 
     // a: 97, z: 122
-    let mut start_score = (0, 0);
     let mut end_score = (0, 0);
 
     let matrix = reader
@@ -220,10 +219,6 @@ pub fn problem12_2(path: &str) -> i32 {
 
     for j in 0..rows {
         for i in 0..cols {
-            if matrix[j][i] == ('S' as u8) {
-                start_score = (j as i32, i as i32);
-            }
-
             if matrix[j][i] == ('E' as u8) {
                 end_score = (j as i32, i as i32);
             }

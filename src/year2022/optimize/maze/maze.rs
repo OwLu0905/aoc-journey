@@ -2,7 +2,7 @@ use super::{position::Position, Row};
 
 #[derive(Debug)]
 pub struct Maze {
-    heights: Vec<Vec<char>>,
+    pub heights: Vec<Vec<char>>,
 }
 
 impl Maze {
@@ -35,6 +35,7 @@ impl Maze {
         true
     }
 
+    /// move upward
     pub fn check_move(&self, from: &Position, to: &Position) -> bool {
         if !self.contains(from) || !self.contains(to) {
             return false;
@@ -68,6 +69,10 @@ impl Maze {
         let gap = (to_height as u8) as i32 - (from_height as u8) as i32;
 
         gap <= 1
+    }
+    pub fn check_move_down() {
+        // TODO: use end position to find the best start position (p12-2)
+        todo!()
     }
 }
 

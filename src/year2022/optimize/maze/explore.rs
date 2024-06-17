@@ -1,36 +1,45 @@
 use std::collections::VecDeque;
 
-use super::{maze::Maze, position::Position, Column, Row};
+use super::{maze::Maze, position::Position, puzzle::Puzzle};
 
 pub struct Explorer {
     maze: Maze,
+    end: Position,
     distance: Vec<Vec<i32>>,
     queue: VecDeque<Position>,
 }
 
 impl Explorer {
-    pub fn new(maze: Maze, start: Position) -> Self {
+    pub fn new(puzzle: Puzzle) -> Self {
+        let maze = puzzle.maze;
+        let start = puzzle.start;
+        let end = puzzle.end;
         let row = maze.get_row() as usize;
         let col = maze.get_col() as usize;
         let mut queue: VecDeque<Position> = VecDeque::new();
         let mut distance = vec![vec![-1; col]; row];
         distance[start.0 as usize][start.1 as usize] = 0;
         queue.push_front(start);
+
         Explorer {
             maze,
+            end,
             distance,
             queue,
         }
     }
 
-    pub fn best_path(&mut self, end_row: Row, end_col: Column) -> Option<i32> {
-        while self.queue.len() != 0 && self.distance[end_row as usize][end_col as usize] == -1 {
+    pub fn best_path(&mut self) -> Option<i32> {
+        let end_item = &self.end;
+        let end_row = end_item.0 as usize;
+        let end_col = end_item.1 as usize;
+        let maze = &self.maze;
+        while self.queue.len() != 0 && self.distance[end_row][end_col] == -1 {
             let pop_neightbor = self.queue.pop_front();
-            dbg!(&pop_neightbor);
 
             if let Some(pop_item) = pop_neightbor {
                 for neightbors in pop_item.neightbors() {
-                    if !self.maze.check_move(&pop_item, &neightbors) {
+                    if !maze.check_move(&pop_item, &neightbors) {
                         continue;
                     }
 
@@ -58,7 +67,7 @@ mod tests {
         io::{BufRead, BufReader},
     };
 
-    use crate::year2022::optimize::maze::{maze::Maze, position::Position};
+    use crate::year2022::optimize::maze::{maze::Maze, puzzle::Puzzle};
 
     use super::Explorer;
 
@@ -82,10 +91,11 @@ mod tests {
             .collect::<Vec<Vec<char>>>();
 
         let maze = Maze::new(matrix);
-        let start = Position::new(20, 0);
 
-        let mut explorer = Explorer::new(maze, start);
-        let result = explorer.best_path(20, 46);
+        let puzzle = Puzzle::new(maze, 'S', 'E');
+
+        let mut explorer = Explorer::new(puzzle);
+        let result = explorer.best_path();
 
         assert_eq!(Some(352), result);
     }
