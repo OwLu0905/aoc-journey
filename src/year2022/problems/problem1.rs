@@ -35,8 +35,6 @@ pub fn solve_problem1(path: &str) -> i32 {
     file.read_to_string(&mut data_content)
         .expect("cant parse data to String");
 
-    dbg!(&data_content);
-    // TODO: collect to Vec
     let mut clear_data: Vec<Vec<&str>> = Vec::new();
 
     let split_dat = data_content.split(SPLIT_ELF);
@@ -56,7 +54,7 @@ pub fn solve_problem1(path: &str) -> i32 {
             _ => {}
         }
     }
-    dbg!(&max_elf_info);
+
     max_elf_info.cal
 }
 
@@ -101,13 +99,13 @@ mod tests {
         let file_path = "testdata/y2022_p1.txt";
         let max_calorie = solve_problem1(file_path);
         assert_eq!(max_calorie, 67016);
-
-        let file_path = "testdata/y2022_example.txt";
-        let max_calorie = solve_problem2(file_path);
-        assert_eq!(max_calorie, 45000);
     }
     #[test]
     fn tests_y2022_d1_2() {
+        let file_path = "testdata/y2022_example.txt";
+        let max_calorie = solve_problem2(file_path);
+        assert_eq!(max_calorie, 45000);
+
         let file_path = "testdata/y2022_p1.txt";
         let max_calorie = solve_problem2(file_path);
         assert_eq!(max_calorie, 200116);

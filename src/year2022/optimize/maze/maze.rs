@@ -97,10 +97,10 @@ mod tests {
         ];
         let maze = Maze::new(matrix);
         let center = Position::new(1, 1);
-        for i in center.neightbors() {
-            if !maze.check_move(&center, &i) {
-                dbg!(&center, &i);
-            }
-        }
+        // for i in center.neightbors() {
+        //     if !maze.check_move(&center, &i) {
+        //         dbg!(&center, &i);
+        //     }
+        // }
     }
 }
