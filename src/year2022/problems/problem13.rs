@@ -138,6 +138,17 @@ fn compare(left: &String, right: &String) -> PuzzleState {
     check
 }
 
+pub fn insert_sort(list: &mut Vec<String>) {
+    for i in 1..list.len() {
+        let mut j = i;
+
+        while j > 0 && compare(&list[j - 1], &list[j]) == PuzzleState::Failure {
+            list.swap(j - 1, j);
+            j -= 1;
+        }
+    }
+}
+
 pub fn problem13_1(path: &str) -> usize {
     let mut file = File::open(path)
         .expect("can't read the file, please check whether the file is exist or not");
@@ -181,7 +192,35 @@ pub fn problem13_1(path: &str) -> usize {
     count
 }
 
-pub fn problem13_2() {}
+pub fn problem13_2(path: &str) -> usize {
+    let mut file = File::open(path)
+        .expect("can't read the file, please check whether the file is exist or not");
+    let mut data_content = String::new();
+
+    file.read_to_string(&mut data_content)
+        .expect("cant parse data to String");
+
+    let mut list: Vec<String> = Vec::new();
+
+    let split_dat = data_content.split(SPLIT_COL);
+
+    for sp in split_dat {
+        if sp.is_empty() {
+            continue;
+        }
+        list.push(sp.to_string());
+    }
+
+    list.push("[[2]]".to_string());
+    list.push("[[6]]".to_string());
+
+    insert_sort(&mut list);
+
+    let divider_1 = &list.iter().position(|x| x == "[[2]]").unwrap() + 1;
+    let divider_2 = &list.iter().position(|x| x == "[[6]]").unwrap() + 1;
+
+    divider_1 * divider_2
+}
 
 #[cfg(test)]
 mod tests {
@@ -223,6 +262,15 @@ mod tests {
         let check = compare(&left, &right);
         assert_eq!(check, PuzzleState::Failure);
     }
-    // #[test]
-    // fn tests_y2022_d13_2() {}
+
+    #[test]
+    fn tests_y2022_d13_2() {
+        let file_path = "testdata/y2022_p13_simple.txt";
+        let value = problem13_2(file_path);
+        assert_eq!(value, 140);
+
+        let file_path = "testdata/y2022_p13.txt";
+        let value = problem13_2(file_path);
+        assert_eq!(value, 20304);
+    }
 }
