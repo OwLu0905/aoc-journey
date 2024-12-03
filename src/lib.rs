@@ -20,6 +20,12 @@ pub mod year2022 {
     pub mod optimize;
 }
 
+pub mod year2024 {
+    pub mod problems {
+        pub mod problem1;
+    }
+}
+
 pub mod command {
     pub mod calculate_stars;
     pub mod create_template;
