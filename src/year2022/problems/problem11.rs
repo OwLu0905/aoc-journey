@@ -9,6 +9,12 @@ static SPLIT_SECTION: &str = if cfg!(target_os = "windows") {
     "\n\n"
 };
 
+static SPLIT_COL: &str = if cfg!(target_os = "windows") {
+    "\r\n"
+} else {
+    "\n"
+};
+
 #[derive(Debug)]
 struct MonkeyState {
     no: i128,
@@ -137,7 +143,7 @@ pub fn problem11_1(path: &str) -> i128 {
     let mut monkey_list = data_list
         .iter()
         .map(|section| {
-            let paraph: Vec<&str> = section.split_terminator("\n").collect();
+            let paraph: Vec<&str> = section.split_terminator(SPLIT_COL).collect();
             MonkeyState::new(paraph)
         })
         .collect::<Vec<MonkeyState>>();
@@ -191,7 +197,7 @@ pub fn problem11_2(path: &str) -> i128 {
     let mut monkey_list = data_list
         .iter()
         .map(|section| {
-            let paraph: Vec<&str> = section.split_terminator("\n").collect();
+            let paraph: Vec<&str> = section.split_terminator(SPLIT_COL).collect();
             MonkeyState::new(paraph)
         })
         .collect::<Vec<MonkeyState>>();
