@@ -23,6 +23,7 @@ pub mod year2022 {
 pub mod year2024 {
     pub mod problems {
         pub mod problem1;
+        pub mod problem2;
     }
 }
 
