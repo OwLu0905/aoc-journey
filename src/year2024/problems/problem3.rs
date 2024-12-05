@@ -1,7 +1,7 @@
 use regex::Regex;
 use std::{
     fs::File,
-    io::{BufRead, BufReader, Read},
+    io::{BufReader, Read},
 };
 
 fn split_undo(contents: &str) -> i32 {

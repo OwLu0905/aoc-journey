@@ -95,8 +95,8 @@ mod tests {
             vec!['a', 'a', 'b'],
             vec!['a', 'b', 'a'],
         ];
-        let maze = Maze::new(matrix);
-        let center = Position::new(1, 1);
+        let _maze = Maze::new(matrix);
+        let _center = Position::new(1, 1);
         // for i in center.neightbors() {
         //     if !maze.check_move(&center, &i) {
         //         dbg!(&center, &i);

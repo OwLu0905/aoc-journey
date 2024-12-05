@@ -74,6 +74,48 @@ fn get_pos(
     false
 }
 
+fn check_dialog(data: &Vec<Vec<String>>, row: usize, col: usize) -> i32 {
+    let mut count = 0;
+    let dr = [-1, 1];
+    let dc = [1, -1];
+
+    let row_v1 = (row as i32 + dr[0]) as usize;
+    let col_v1 = (col as i32 + dc[0]) as usize;
+
+    let v1 = data[row_v1][col_v1].as_str();
+
+    let row_v2 = (row as i32 + dr[1]) as usize;
+    let col_v2 = (col as i32 + dc[1]) as usize;
+
+    let v2 = data[row_v2][col_v2].as_str();
+
+    if v1 != v2 && (v1 == "M" || v1 == "S") && (v2 == "M" || v2 == "S") {
+        count += 1;
+    }
+
+    let dr = [-1, 1];
+    let dc = [-1, 1];
+
+    let row_v1 = (row as i32 + dr[0]) as usize;
+    let col_v1 = (col as i32 + dc[0]) as usize;
+
+    let v1 = data[row_v1][col_v1].as_str();
+
+    let row_v2 = (row as i32 + dr[1]) as usize;
+    let col_v2 = (col as i32 + dc[1]) as usize;
+
+    let v2 = data[row_v2][col_v2].as_str();
+
+    if v1 != v2 && (v1 == "M" || v1 == "S") && (v2 == "M" || v2 == "S") {
+        count += 1;
+    }
+
+    if count == 2 {
+        return 1;
+    }
+    0
+}
+
 pub fn problem4_1(path: &str) -> i32 {
     let file = File::open(path).expect("Open file fialed");
     let reader = BufReader::new(file);
@@ -100,7 +142,30 @@ pub fn problem4_1(path: &str) -> i32 {
     }
     sum
 }
-pub fn problem4_2() {}
+pub fn problem4_2(path: &str) -> i32 {
+    let file = File::open(path).expect("Open file fialed");
+    let reader = BufReader::new(file);
+
+    let matrix: Vec<Vec<String>> = reader
+        .lines()
+        .map(|x| x.unwrap().chars().map(|c| c.to_string()).collect())
+        .collect();
+
+    let max_row = matrix.len() - 1;
+    let max_col = matrix[0].len() - 1;
+
+    let mut sum = 0;
+
+    for i in 1..max_row {
+        for j in 1..max_col {
+            if matrix[i][j] == "A" {
+                let value = check_dialog(&matrix, i, j);
+                sum += value
+            }
+        }
+    }
+    sum
+}
 
 #[cfg(test)]
 mod tests {
@@ -116,5 +181,11 @@ mod tests {
     }
 
     #[test]
-    fn tests_y2024_d4_2() {}
+    fn tests_y2024_d4_2() {
+        let file_path = "testdata/y2024_p4_simple.txt";
+        assert_eq!(problem4_2(file_path), 9);
+
+        let file_path = "testdata/y2024_p4.txt";
+        assert_eq!(problem4_2(file_path), 1822);
+    }
 }
