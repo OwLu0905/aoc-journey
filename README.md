@@ -40,7 +40,7 @@ aoc-journey/
 └── README.md
 ```
 
-- 2024 : day3
+- 2024 : day5
 - 2022 : day15
 
-Total stars: 36 ⭐️
+Total stars: 40 ⭐️
