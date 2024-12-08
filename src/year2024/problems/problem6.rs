@@ -49,19 +49,19 @@ impl Guard {
         let mut next_row = self.row;
         let mut next_col = self.col;
 
+        match self.cursor {
+            Cursor::Top => next_row -= 1,
+            Cursor::Right => next_col += 1,
+            Cursor::Down => next_row += 1,
+            Cursor::Left => next_col -= 1,
+        }
+
         if next_row < 0
             || next_row >= (self.max_row as i32)
             || next_col < 0
             || next_col >= (self.max_col as i32)
         {
             return false;
-        }
-
-        match self.cursor {
-            Cursor::Top => next_row -= 1,
-            Cursor::Right => next_col += 1,
-            Cursor::Down => next_row += 1,
-            Cursor::Left => next_col -= 1,
         }
 
         let obstacle = obstacle_set.contains(&(next_row as usize, next_col as usize));
@@ -94,19 +94,19 @@ impl Guard {
         let mut next_row = self.row;
         let mut next_col = self.col;
 
+        match self.cursor {
+            Cursor::Top => next_row -= 1,
+            Cursor::Right => next_col += 1,
+            Cursor::Down => next_row += 1,
+            Cursor::Left => next_col -= 1,
+        }
+
         if next_row < 0
             || next_row >= (self.max_row as i32)
             || next_col < 0
             || next_col >= (self.max_col as i32)
         {
             return false;
-        }
-
-        match self.cursor {
-            Cursor::Top => next_row -= 1,
-            Cursor::Right => next_col += 1,
-            Cursor::Down => next_row += 1,
-            Cursor::Left => next_col -= 1,
         }
 
         let obstacle = obstacle_map.contains_key(&(next_row as usize, next_col as usize));
